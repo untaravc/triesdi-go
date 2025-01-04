@@ -1,0 +1,42 @@
+# Go build artifacts
+/bin/
+/pkg/
+/cmd/
+/vendor/
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+
+# Logs and runtime files
+logs/
+*.log
+*.out
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# IDE-specific files
+## VS Code
+.vscode/
+
+## PhpStorm/JetBrains
+.idea/
+*.iml
+*.iws
+out/
+
+# Build artifacts
+*.o
+*.a
+
+# Test binary
+testdata/
+
+# Temporary files
+*.swp
+*.tmp
+*.temp
