@@ -40,3 +40,5 @@ testdata/
 *.swp
 *.tmp
 *.temp
+
+.env

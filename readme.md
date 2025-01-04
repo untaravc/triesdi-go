@@ -102,7 +102,9 @@ air serve
 ## Update
 Consider updates every Monday in each week
 
-### `[2024.12.30]`
+`[24.12.30]`
 - Create readme.md, folder structure, .gitignore
+- App config, cors config, db connection, redis cache, log config
+- Routing, Controller
 
 
