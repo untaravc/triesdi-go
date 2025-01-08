@@ -1,8 +1,10 @@
 # Gin App Base
 
 ## Instalation
+
 1. Install Go
-Check if instalation success.
+   Check if instalation success.
+
 ```
 go version
 ```
@@ -16,11 +18,13 @@ go mod init gin-gorm-project
 ```
 
 3. Install Gin
+
 ```
 go get -u github.com/gin-gonic/gin
 ```
 
 4. Install Gorm & Drivers
+
 ```
 go get -u gorm.io/gorm
 go get -u gorm.io/driver/mysql
@@ -29,23 +33,27 @@ go get -u gorm.io/driver/sqlite
 ```
 
 5. Run App
-Set the .env. Copy from .env.example
+   Set the .env. Copy from .env.example
+
 ```
 go run main.go
 ```
 
 6. Run Dev mode
+
 ```
 air serve
 ```
 
 ## Features
+
 - Gorm config mysql, posgres
 - Gin routing
 - Auth & Middelware
 - Redis cache
 
 ---
+
 ## Explanation of Folders
 
 - `app/`  
@@ -88,6 +96,7 @@ air serve
   Specifies the Go module and dependencies.
 
 ## App Flow
+
 - `main.go`  
   Entry point of the application
 
@@ -100,11 +109,11 @@ air serve
 ---
 
 ## Update
+
 Consider updates every Monday in each week
 
 `[24.12.30]`
+
 - Create readme.md, folder structure, .gitignore
 - App config, cors config, db connection, redis cache, log config
 - Routing, Controller
-
-
