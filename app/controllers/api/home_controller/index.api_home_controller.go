@@ -8,5 +8,5 @@ import (
 )
 
 func Index(ctx *gin.Context) {
-	response.BaseResponse(ctx, http.StatusOK, true, "OK", "Hello World")
+	response.BaseResponse(ctx, http.StatusOK, true, "OK", "Test Hello World")
 }

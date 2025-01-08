@@ -23,3 +23,8 @@ func ConnectDatabase() {
 
 	log.Println("Connected to DATABASE")
 }
+
+// GetDB returns the initialized DB instance
+func GetDB() *gorm.DB {
+	return DB
+}

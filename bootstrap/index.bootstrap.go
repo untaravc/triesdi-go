@@ -1,12 +1,14 @@
 package bootstrap
 
 import (
+	"fmt"
 	"log"
 	"os"
 	"triesdi/app/commands"
 	"triesdi/app/configs"
 	"triesdi/app/configs/app_config"
 	"triesdi/app/configs/cors_config"
+
 	"triesdi/app/configs/db_config"
 	"triesdi/app/configs/log_config"
 	"triesdi/app/routes"
@@ -41,10 +43,14 @@ func BootstrapApp() {
 	app.Use(cors_config.CORSMiddleware())
 	app.Use(log_config.LoggerMiddleware())
 
-	db_config.InitRedisClient()
+	// db_config.InitRedisClient()
+	db_config.ConnectDatabase()
 
 	routes.InitRoute(app)
 	routes.InitApiRoute(app)
 
-	app.Run(app_config.PORT)
+	fmt.Printf("Server is starting on port %s...\n", app_config.PORT)
+	if err := app.Run(app_config.PORT); err != nil {
+		log.Fatal("Failed to start server: ", err)
+	}
 }
