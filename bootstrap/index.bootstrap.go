@@ -1,15 +1,9 @@
 package bootstrap
 
 import (
-	// "gin-gorm/configs"
-	// "gin-gorm/configs/app_config"
-	// "gin-gorm/configs/cors_config"
-
-	// "gin-gorm/app/middleware"
-	// "gin-gorm/configs/log_config"
-	// "gin-gorm/database"
-	// "gin-gorm/routes"
 	"log"
+	"os"
+	"triesdi/app/commands"
 	"triesdi/app/configs"
 	"triesdi/app/configs/app_config"
 	"triesdi/app/configs/cors_config"
@@ -29,6 +23,15 @@ func BootstrapApp() {
 	}
 
 	configs.InitConfig()
+
+	if len(os.Args) > 1 {
+		switch os.Args[1] {
+		case "migrate":
+			log.Println("Running migrations...")
+			commands.RunMigration()
+			return
+		}
+	}
 
 	if app_config.GIN_MODE == "release" {
 		gin.SetMode(gin.ReleaseMode)

@@ -2,7 +2,7 @@ package api_home_controller
 
 import (
 	"net/http"
-	response "triesdi/app/responses"
+	"triesdi/app/responses/response"
 
 	"github.com/gin-gonic/gin"
 )

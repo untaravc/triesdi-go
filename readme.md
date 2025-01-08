@@ -107,4 +107,8 @@ Consider updates every Monday in each week
 - App config, cors config, db connection, redis cache, log config
 - Routing, Controller
 
-
+## Upcoming Feature
+- DB migration
+- Posgres config
+- Mailer
+- Firebase config

@@ -1,6 +1,8 @@
 package main
 
-import "triesdi/bootstrap"
+import (
+	"triesdi/bootstrap"
+)
 
 func main() {
 	bootstrap.BootstrapApp()
