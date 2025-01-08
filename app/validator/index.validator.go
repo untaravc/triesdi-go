@@ -1,6 +1,8 @@
 package validator
 
 import (
+	"fmt"
+
 	"github.com/go-playground/validator/v10"
 )
 
@@ -19,3 +21,16 @@ func ValidateStruct(s interface{}) error {
 	v := InitValidator()
 	return v.Struct(s)
 }
+
+//Formatting message validation Error
+func FormatValidationError(err error) []string {
+	var errors []string
+
+	for _, e := range err.(validator.ValidationErrors) {
+		errors = append(errors, fmt.Sprintf("Field '%s' failed validation with tag '%s'", e.Field(), e.Tag()))
+	}
+
+	return errors
+} 
+
+
