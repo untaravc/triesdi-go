@@ -1,7 +1,6 @@
 package bootstrap
 
 import (
-	"fmt"
 	"log"
 	"os"
 	"triesdi/app/commands"
@@ -49,7 +48,6 @@ func BootstrapApp() {
 	routes.InitRoute(app)
 	routes.InitApiRoute(app)
 
-	fmt.Printf("Server is starting on port %s...\n", app_config.PORT)
 	if err := app.Run(app_config.PORT); err != nil {
 		log.Fatal("Failed to start server: ", err)
 	}
