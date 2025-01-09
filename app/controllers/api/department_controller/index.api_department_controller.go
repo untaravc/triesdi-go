@@ -5,7 +5,7 @@ import (
 	"triesdi/app/configs/db_config"
 	department_repository "triesdi/app/repository/department"
 	department_request "triesdi/app/request/department"
-	response "triesdi/app/responses"
+	response "triesdi/app/responses/response"
 	department_service "triesdi/app/service/department"
 
 	"github.com/gin-gonic/gin"
@@ -15,17 +15,17 @@ func Index(ctx *gin.Context) {
 	response.BaseResponse(ctx, http.StatusOK, true, "OK", "Hello World")
 }
 
-func CreateDepartment (ctx *gin.Context) {
-	
+func CreateDepartment(ctx *gin.Context) {
+
 	var input department_request.CreateDepartmentRequest
 
 	err := ctx.ShouldBindJSON(&input)
 	if err != nil {
-		response.BaseResponse(ctx, http.StatusBadRequest, false, "Gagal","Gagal membuat")
+		response.BaseResponse(ctx, http.StatusBadRequest, false, "Gagal", "Gagal membuat")
 	}
 
 	if input.Name == "" {
-		response.BaseResponse(ctx, http.StatusBadRequest, false, "Gagal","Gagal membuat")
+		response.BaseResponse(ctx, http.StatusBadRequest, false, "Gagal", "Gagal membuat")
 	}
 
 	// Get DB Config

@@ -43,8 +43,8 @@ func BootstrapApp() {
 	app.Use(cors_config.CORSMiddleware())
 	app.Use(log_config.LoggerMiddleware())
 
-	// db_config.InitRedisClient()
 	db_config.ConnectDatabase()
+	// db_config.InitRedisClient()
 
 	routes.InitRoute(app)
 	routes.InitApiRoute(app)
