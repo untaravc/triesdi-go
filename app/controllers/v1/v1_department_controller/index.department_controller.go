@@ -58,7 +58,7 @@ func GetDepartments(ctx *gin.Context) {
 		return
 	}
 
-	var formattedDepartments []converter.DepartmentFormatter
+	formattedDepartments := []converter.DepartmentFormatter{}
 	for _, department := range departments {
 		formattedDepartments = append(formattedDepartments, converter.FormatDepartment(department))
 	}
