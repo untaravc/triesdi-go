@@ -5,11 +5,12 @@ import (
 )
 
 func BaseResponse(ctx *gin.Context, httpStatus int, success bool, message string, result interface{}) {
-	ctx.AbortWithStatusJSON(httpStatus, TypeResponse{
-		Success: success,
-		Message: message,
-		Result:  result,
-	})
+	// ctx.AbortWithStatusJSON(httpStatus, TypeResponse{
+	// 	Success: success,
+	// 	Message: message,
+	// 	Result:  result,
+	// })
+	ctx.AbortWithStatusJSON(httpStatus, result)
 }
 
 type TypeResponse struct {
