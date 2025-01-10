@@ -8,5 +8,8 @@ type Department struct {
 	Name      string
 	CreatedAt time.Time
 	UpdatedAt time.Time
+<<<<<<< HEAD
 	DeletedAt *time.Time
+=======
+>>>>>>> project-1
 }
