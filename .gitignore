@@ -40,6 +40,7 @@ testdata/
 *.swp
 *.tmp
 *.temp
+tmp/
 
 .env
 .air.toml

@@ -3,6 +3,8 @@ package v1_upload_controller
 import (
 	"net/http"
 	"os"
+	"path/filepath"
+	"strings"
 	"triesdi/app/responses/response"
 
 	upload_repository "triesdi/app/repository/upload_repository"
@@ -23,7 +25,7 @@ func UploadImage(ctx *gin.Context) {
 	awsRegion := os.Getenv("AWS_REGION")
 	s3Bucket := os.Getenv("S3_BUCKET")
 
-	uploadRepo, err := upload_repository.NewS3UploadRepository(awsAccessKey, awsSecretKey, awsRegion, s3Bucket)
+	uploadRepo, err := upload_repository.UploadRepository(awsAccessKey, awsSecretKey, awsRegion, s3Bucket)
 	if err != nil {
 		panic("Failed to initialize upload repository: " + err.Error())
 	}
@@ -37,12 +39,23 @@ func UploadImage(ctx *gin.Context) {
 	}
 	defer file.Close()
 
-	fileURL, err := uploadService.UploadFile(file, header)
-	if err != nil {
-		response.BaseResponse(ctx, http.StatusInternalServerError, false, "Internal System Error", "Failed to get file: "+err.Error())
+	if header.Size > 100*1024 {
+		response.BaseResponse(ctx, http.StatusBadRequest, false, "File too large", "File size should not exceed 100KB")
 		return
 	}
 
-	response.BaseResponse(ctx, http.StatusOK, true, "File uploaded successfully!", fileURL)
+	fileExtension := strings.ToLower(filepath.Ext(header.Filename))
+	if fileExtension != ".jpg" && fileExtension != ".png" && fileExtension != ".jpeg" {
+		response.BaseResponse(ctx, http.StatusBadRequest, false, "Invalid file format", "Only JPG and PNG files are allowed")
+		return
+	}
+
+	fileURL, err := uploadService.UploadFile(file, header)
+	if err != nil {
+		response.BaseResponse(ctx, http.StatusInternalServerError, false, "Internal System Error", "Failed to upload file: "+err.Error())
+		return
+	}
+
+	response.BaseResponse(ctx, http.StatusOK, true, "OK", fileURL)
 
 }

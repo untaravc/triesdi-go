@@ -11,7 +11,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/s3"
 )
 
-func NewS3UploadRepository(accessKey, secretKey, region, bucket string) (*S3UploadRepository, error) {
+func UploadRepository(accessKey, secretKey, region, bucket string) (*S3UploadRepository, error) {
 	cfg, err := config.LoadDefaultConfig(context.TODO(),
 		config.WithRegion(region),
 		config.WithCredentialsProvider(

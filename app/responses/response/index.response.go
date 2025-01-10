@@ -12,10 +12,20 @@ func BaseResponse(ctx *gin.Context, httpStatus int, success bool, message string
 	})
 }
 
+func UploadResponse(ctx *gin.Context, httpStatus int, result string) {
+	ctx.AbortWithStatusJSON(httpStatus, TypeUploadResponse{
+		Result: result,
+	})
+}
+
 type TypeResponse struct {
 	Success bool        `json:"success"`
 	Message string      `json:"message"`
 	Result  interface{} `json:"result"`
+}
+
+type TypeUploadResponse struct {
+	Result string `json:"uri"`
 }
 
 type TypePagination struct {
