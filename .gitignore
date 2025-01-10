@@ -42,3 +42,4 @@ testdata/
 *.temp
 
 .env
+.air.toml

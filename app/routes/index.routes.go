@@ -22,6 +22,6 @@ func InitRoute(app *gin.Engine) {
 	// Employee
 	route.GET("/v1/employee", v1_employee_controller.GetEmployees)
 	route.POST("/v1/employee", v1_employee_controller.CreateEmployee)
-	route.PATCH("/v1/employee/:id", v1_employee_controller.UpdateEmployee)
-	route.DELETE("/v1/employee/:id", v1_employee_controller.DeleteEmployee)
+	route.PATCH("/v1/employee/:identityNumber", v1_employee_controller.UpdateEmployee)
+	route.DELETE("/v1/employee/:identityNumber", v1_employee_controller.DeleteEmployee)
 }

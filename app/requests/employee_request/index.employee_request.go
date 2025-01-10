@@ -11,7 +11,7 @@ type EmployeeRequest struct {
 type EmployeeFilter struct {
 	Offset int    `json:"offset" form:"offset"`
 	Limit  int    `json:"limit" form:"limit"`
-	IdentityNumber  string `json:"identity_number" form:"identity_number"`
+	// IdentityNumber  string `json:"identity_number" form:"identity_number"`
 	Name   string `json:"name" form:"name"`
 	Gender string `json:"gender" form:"gender" binding:"oneof=male female"`
 	DepartmentId int `json:"department_id" form:"department_id"`
