@@ -4,6 +4,7 @@ import (
 	"triesdi/app/controllers/v1/v1_auth_controller"
 	"triesdi/app/controllers/v1/v1_department_controller"
 	"triesdi/app/controllers/v1/v1_employee_controller"
+	"triesdi/app/controllers/v1/v1_upload_controller"
 
 	"github.com/gin-gonic/gin"
 )
@@ -24,4 +25,7 @@ func InitRoute(app *gin.Engine) {
 	route.POST("/v1/employee", v1_employee_controller.CreateEmployee)
 	route.PATCH("/v1/employee/:identityNumber", v1_employee_controller.UpdateEmployee)
 	route.DELETE("/v1/employee/:identityNumber", v1_employee_controller.DeleteEmployee)
+
+	// Image
+	route.POST("/v1/upload", v1_upload_controller.UploadImage)
 }
