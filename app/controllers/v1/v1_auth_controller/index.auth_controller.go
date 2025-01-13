@@ -32,9 +32,9 @@ func Auth(ctx *gin.Context) {
 
 
 type AuthRequest struct {
-	Email string `json:"email" binding:"required"`
-	Password string `json:"password" binding:"required"`
-	Action string `json:"action" binding:"required,oneof='login' 'create'"`
+	Email    string `json:"email" binding:"required,email"`                 // Must be a valid email format
+	Password string `json:"password" binding:"required,min=8,max=32"`      // Must be between 8 and 32 characters
+	Action   string `json:"action" binding:"required,oneof=login create"`  // Must be either 'login' or 'create'
 }
 
 func AuthNew(ctx *gin.Context) {
@@ -55,21 +55,30 @@ func AuthNew(ctx *gin.Context) {
 	authService := auth_service.NewService(authRepository)
 
 	var authResponse response.AuthResponse
+	var status int
 	var err error
+
 	if authRequest.Action == "login" {
-		authResponse, err = authService.Login(authRequest.Email, authRequest.Password)
+		// Login with status code
+		authResponse, status, err = authService.Login(authRequest.Email, authRequest.Password)
 		if err != nil {
-			ctx.JSON(http.StatusUnauthorized, gin.H{"error": err.Error()})
+			ctx.JSON(status, gin.H{"error": err.Error()})
 			return
 		}
 	} else if authRequest.Action == "create" {
-		authResponse, err = authService.CreateUser(authRequest.Email, authRequest.Password)
+		// Create user without status code handling (assuming CreateUser doesn't return a status)
+		authResponse, status, err = authService.CreateUser(authRequest.Email, authRequest.Password)
 		if err != nil {
-			ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			ctx.JSON(status, gin.H{"error": err.Error()})
 			return
 		}
+		status = http.StatusCreated // Set status for successful user creation
+	} else {
+		// Invalid action
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Invalid action"})
+		return
 	}
 
 	// Return Auth Response
-	ctx.JSON(http.StatusOK, authResponse)
+	ctx.JSON(status, authResponse)
 }
