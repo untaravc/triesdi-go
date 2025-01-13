@@ -4,6 +4,7 @@ import (
 	"triesdi/app/controllers/v1/v1_auth_controller"
 	"triesdi/app/controllers/v1/v1_department_controller"
 	"triesdi/app/controllers/v1/v1_employee_controller"
+	"triesdi/app/middleware"
 	"triesdi/app/controllers/v1/v1_upload_controller"
 
 	"github.com/gin-gonic/gin"
@@ -12,7 +13,12 @@ import (
 func InitRoute(app *gin.Engine) {
 	route := app
 
-	route.POST("/v1/auth", v1_auth_controller.Auth)
+	JWTMiddleware := middleware.JWTMiddleware()
+
+	route.POST("/v1/auth", v1_auth_controller.AuthNew)
+
+	// Middleware
+	route.Use(JWTMiddleware)
 
 	// Department
 	route.GET("/v1/department", v1_department_controller.GetDepartments)

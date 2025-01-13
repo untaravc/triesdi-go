@@ -1,1 +1,13 @@
-package utils
+package common
+
+import "golang.org/x/crypto/bcrypt"
+
+func CheckPasswordHash(password, hash string) bool {
+	err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(password))
+	return err == nil
+}
+
+func HashingPassword(password string) (string, error) {
+	hash, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.MinCost)
+	return string(hash), err
+}

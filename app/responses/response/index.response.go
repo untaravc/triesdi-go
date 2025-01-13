@@ -41,3 +41,8 @@ type ErrorMessage struct {
 	Field string `json:"field"`
 	Msg   string `json:"msg"`
 }
+
+type AuthResponse struct {
+	Email string `json:"email"`
+	Token string `json:"token"`
+}
