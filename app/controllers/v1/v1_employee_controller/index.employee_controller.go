@@ -23,11 +23,11 @@ func GetEmployees(ctx *gin.Context) {
 	var filter employee_request.EmployeeFilter
 
 	// Parse limit, offset, and name query parameters
-	limitStr := ctx.DefaultQuery("limit", "5")  // Default value is 5
+	limitStr := ctx.DefaultQuery("limit", "5")   // Default value is 5
 	offsetStr := ctx.DefaultQuery("offset", "0") // Default value is 0
 	name := ctx.DefaultQuery("name", "")         // Default value is empty string
-	gender := ctx.DefaultQuery("gender","")
-	departmentId := ctx.DefaultQuery("departmentId","")
+	gender := ctx.DefaultQuery("gender", "")
+	departmentId := ctx.DefaultQuery("departmentId", "")
 
 	// Convert limit and offset to integers
 	limit, err := strconv.Atoi(limitStr)
@@ -64,7 +64,7 @@ func GetEmployees(ctx *gin.Context) {
 	for _, employee := range employees {
 		formattedEmployees = append(formattedEmployees, converter.FormatEmployee(employee))
 	}
-	
+
 	response.BaseResponse(ctx, http.StatusOK, true, "Success", formattedEmployees)
 }
 
@@ -103,7 +103,7 @@ func CreateEmployee(ctx *gin.Context) {
 
 // UpdateEmployee function
 func UpdateEmployee(ctx *gin.Context) {
-	
+
 	identityNumber := ctx.Param("identityNumber")
 
 	var input employee_request.EmployeeRequest
