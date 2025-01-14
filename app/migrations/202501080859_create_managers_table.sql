@@ -6,7 +6,7 @@ CREATE TABLE managers (
   user_image_uri varchar(255) null,
   company_name varchar(52) null,
   company_image_uri varchar(255) null,
-  created_at datetime not null,
+  created_at datetime null,
   updated_at datetime null,
   deleted_at datetime null
 );
