@@ -23,6 +23,7 @@ func InitRoute(app *gin.Engine) {
 
 	// Management
 	route.GET("/v1/user", v1_management_controller.GetAuth)
+	route.PATCH("/v1/user", v1_management_controller.Update)
 
 	// Department
 	route.GET("/v1/department", v1_department_controller.GetDepartments)
