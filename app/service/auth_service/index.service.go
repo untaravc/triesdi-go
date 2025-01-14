@@ -54,10 +54,15 @@ func (s *service) Login(email, password string) (response.AuthResponse, int, err
 	user := auth_repository.Auth{Email: email, Password: password}
 
 	// Get User By Email
-	user, err := s.repository.GetUserByEmail(user.Email)
-	if err != nil {
-		return response.AuthResponse{}, http.StatusNotFound,err
-	}
+	// user, err := s.repository.GetUserByEmail(user.Email)
+	// if err != nil {
+	// 	return response.AuthResponse{}, http.StatusNotFound,err
+	// }
+
+	user, err := s.repository.GetUserByEmail(email)
+    if err != nil {
+        return response.AuthResponse{}, http.StatusNotFound, err
+    }
 
 	// Check Password
 	if !common.CheckPasswordHash(password, user.Password) {

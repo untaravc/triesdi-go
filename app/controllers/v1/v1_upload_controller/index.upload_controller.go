@@ -34,28 +34,28 @@ func UploadImage(ctx *gin.Context) {
 	uploadService := upload.NewUploadService(*uploadRepo)
 
 	if err != nil {
-		response.BaseResponse(ctx, http.StatusBadRequest, false, "Please insert file to upload", "Failed to get file: "+err.Error())
+		response.BaseResponse(ctx, http.StatusBadRequest, false, "Please insert file to upload", gin.H{"error" :err.Error()})
 		return
 	}
 	defer file.Close()
 
 	if header.Size > 100*1024 {
-		response.BaseResponse(ctx, http.StatusBadRequest, false, "File too large", "File size should not exceed 100KB")
+		response.BaseResponse(ctx, http.StatusBadRequest, false, "File too large", gin.H{"error" : "File size should not exceed 100KB"})
 		return
 	}
 
 	fileExtension := strings.ToLower(filepath.Ext(header.Filename))
 	if fileExtension != ".jpg" && fileExtension != ".png" && fileExtension != ".jpeg" {
-		response.BaseResponse(ctx, http.StatusBadRequest, false, "Invalid file format", "Only JPG and PNG files are allowed")
+		response.BaseResponse(ctx, http.StatusBadRequest, false, "Invalid file format", gin.H{"error": "Only JPG & PNG Allowed"})
 		return
 	}
 
 	fileURL, err := uploadService.UploadFile(file, header)
 	if err != nil {
-		response.BaseResponse(ctx, http.StatusInternalServerError, false, "Internal System Error", "Failed to upload file: "+err.Error())
+		response.BaseResponse(ctx, http.StatusInternalServerError, false, "Internal System Error", gin.H{"error": err.Error()})
 		return
 	}
 
-	response.BaseResponse(ctx, http.StatusOK, true, "OK", fileURL)
+	response.BaseResponse(ctx, http.StatusOK, true, "OK", gin.H{"uri": fileURL})
 
 }

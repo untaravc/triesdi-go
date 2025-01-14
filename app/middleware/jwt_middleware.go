@@ -17,6 +17,19 @@ func JWTMiddleware() gin.HandlerFunc {
 			return
 		}
 
+		// If Content Type is empty or not application/json
+		if c.ContentType() != "application/json" {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "Unsupported Media Type"})
+			c.Abort()
+			return
+		}
+
+		// If There is no Bearer String
+		if !strings.HasPrefix(tokenString, "Bearer ") {
+			c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid token"})
+			c.Abort()
+		}
+
 		tokenString = strings.TrimPrefix(tokenString, "Bearer ")
 
 		claims, err := utils.ValidateToken(tokenString)
@@ -26,8 +39,6 @@ func JWTMiddleware() gin.HandlerFunc {
 			c.Abort()
 			return
 		}
-
-		// common.ConsoleLog(claims)
 
 		// You can set the claims to the context if needed
 		c.Set("email", claims.Email)

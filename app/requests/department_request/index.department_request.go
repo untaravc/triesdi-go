@@ -1,7 +1,7 @@
 package department_request
 
 type DepartmentRequest struct {
-	Name string `json:"name" form:"name" binding:"required,min=3,max=33"`
+	Name string `json:"name" form:"name" binding:"required,min=4,max=33"`
 }
 
 // Filter Offset Limit & Name
