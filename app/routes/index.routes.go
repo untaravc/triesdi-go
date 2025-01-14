@@ -4,8 +4,8 @@ import (
 	"triesdi/app/controllers/v1/v1_auth_controller"
 	"triesdi/app/controllers/v1/v1_department_controller"
 	"triesdi/app/controllers/v1/v1_employee_controller"
-	"triesdi/app/middleware"
 	"triesdi/app/controllers/v1/v1_upload_controller"
+	"triesdi/app/middleware"
 
 	"github.com/gin-gonic/gin"
 )
@@ -33,5 +33,5 @@ func InitRoute(app *gin.Engine) {
 	route.DELETE("/v1/employee/:identityNumber", v1_employee_controller.DeleteEmployee)
 
 	// Image
-	route.POST("/v1/upload", v1_upload_controller.UploadImage)
+	route.POST("/v1/file", v1_upload_controller.UploadImage)
 }

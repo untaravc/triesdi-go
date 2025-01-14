@@ -96,7 +96,7 @@ func CreateDepartment (ctx *gin.Context) {
 	convertedResponse := converter.FormatDepartment(newDepartment)
 
 	// Return the successful response with the created department details
-	response.BaseResponse(ctx, http.StatusOK, true, "Success", convertedResponse)
+	response.BaseResponse(ctx, http.StatusCreated, true, "Success", convertedResponse)
 }
 
 func UpdateDepartment (ctx *gin.Context) {
