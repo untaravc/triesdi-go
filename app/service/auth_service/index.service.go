@@ -36,7 +36,7 @@ func (s *service) CreateUser(email, password string) (response.AuthResponse, int
 	}
 
 	// Generate Token
-	token, err := utils.GenerateToken(user.Email)
+	token, err := utils.GenerateToken(user.Email, user.ID.String())
 	if err != nil {
 		return response.AuthResponse{}, http.StatusInternalServerError, err
 	}
@@ -51,8 +51,7 @@ func (s *service) CreateUser(email, password string) (response.AuthResponse, int
 }
 
 func (s *service) Login(email, password string) (response.AuthResponse, int, error) {
-	user := auth_repository.Auth{Email: email, Password: password}
-
+	
 	user, err := s.repository.GetUserByEmail(email)
     if err != nil {
         return response.AuthResponse{}, http.StatusNotFound, err
@@ -64,7 +63,7 @@ func (s *service) Login(email, password string) (response.AuthResponse, int, err
 	}
 
 	// Generate Token
-	token, err := utils.GenerateToken(user.Email)
+	token, err := utils.GenerateToken(user.Email, user.ID.String())
 	if err != nil {
 		return response.AuthResponse{}, http.StatusInternalServerError, err
 	}

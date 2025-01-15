@@ -4,6 +4,8 @@ import (
 	"errors"
 	"triesdi/app/utils/common"
 
+	"github.com/google/uuid"
+
 	"gorm.io/gorm"
 )
 
@@ -31,7 +33,7 @@ func (r *repository) CreateUser(email, password string) (Auth, error) {
 		return Auth{}, err
 	}
 
-	user := Auth{Email: email, Password: hashedPassword}
+	user := Auth{ID: uuid.New(), Email: email, Password: hashedPassword}
 	if err := r.db.Create(&user).Error; err != nil {
 		return user, err
 	}
