@@ -53,12 +53,6 @@ func (s *service) CreateUser(email, password string) (response.AuthResponse, int
 func (s *service) Login(email, password string) (response.AuthResponse, int, error) {
 	user := auth_repository.Auth{Email: email, Password: password}
 
-	// Get User By Email
-	// user, err := s.repository.GetUserByEmail(user.Email)
-	// if err != nil {
-	// 	return response.AuthResponse{}, http.StatusNotFound,err
-	// }
-
 	user, err := s.repository.GetUserByEmail(email)
     if err != nil {
         return response.AuthResponse{}, http.StatusNotFound, err

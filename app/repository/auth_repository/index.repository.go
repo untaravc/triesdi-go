@@ -8,7 +8,7 @@ import (
 )
 
 func (Auth) TableName() string {
-	return "managers"
+	return "users"
 }
 
 type Repository interface {

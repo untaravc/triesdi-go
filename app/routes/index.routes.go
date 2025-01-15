@@ -13,7 +13,8 @@ func InitRoute(app *gin.Engine) {
 
 	JWTMiddleware := middleware.JWTMiddleware()
 
-	route.POST("/v1/auth", v1_auth_controller.AuthNew)
+	route.POST("/v1/login", v1_auth_controller.Login)
+	route.POST("/v1/register", v1_auth_controller.Register)
 
 	// Middleware
 	route.Use(JWTMiddleware)
