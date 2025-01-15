@@ -3,6 +3,7 @@ package bootstrap
 import (
 	"log"
 	"os"
+	"triesdi/app/cache"
 	"triesdi/app/commands"
 	"triesdi/app/configs"
 	"triesdi/app/configs/app_config"
@@ -17,6 +18,10 @@ import (
 )
 
 func BootstrapApp() {
+
+	// Initialize cache
+	cache.InitializeCacheActivityTypes()
+
 	err := godotenv.Load()
 
 	if err != nil {
