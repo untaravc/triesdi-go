@@ -19,3 +19,8 @@ func InitializeCacheActivityTypes() {
 	}
 }
 
+// GetCaloriesPerMinute returns the calories burned per minute for a given activity type
+func GetCaloriesPerMinute(activityType string) int {
+	return ActivityTypeCache[activityType]
+}
+
