@@ -1,7 +1,6 @@
 package v1_user_controller
 
 import (
-	"fmt"
 	"net/http"
 	"triesdi/app/configs/db_config"
 	"triesdi/app/repository/user_repository"
@@ -58,8 +57,6 @@ func GetUser(ctx *gin.Context) {
 		ctx.JSON(http.StatusNotFound, gin.H{"error": "user not found"})
 		return
 	}
-	fmt.Println("TEST")
-	fmt.Println(id)
 	db := db_config.GetDB()
 	userRepository := user_repository.NewRepository(db)
 	userService := user_service.NewService(userRepository)

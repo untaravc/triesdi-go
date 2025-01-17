@@ -1,7 +1,6 @@
 package v1_activity_controller
 
 import (
-	"fmt"
 	"net/http"
 	"triesdi/app/configs/db_config"
 	"triesdi/app/repository/activity_repository"
@@ -25,7 +24,10 @@ func GetActivities(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, activities)
+	// Formatting activities to Response
+	activitiesResponse := activity_response.FormatGetAllResponse(activities)
+
+	c.JSON(http.StatusOK, activitiesResponse)
 }
 
 func CreateActivity(ctx *gin.Context) {
@@ -59,8 +61,6 @@ func CreateActivity(ctx *gin.Context) {
 	var activity activity_repository.ReturnActivity
 	var activityResponse activity_response.ActivityResponse
 	var err error
-
-	fmt.Printf("user_id: %v\n", user_id)
 
 	activity, err = activityService.CreateActivity(user_id.(string), *activityRequest)
 	if err != nil {

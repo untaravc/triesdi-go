@@ -27,3 +27,22 @@ func FormatCreateUpdateResponse (activity activity_repository.ReturnActivity) Ac
 	}
 	return formatter
 }
+
+func FormatGetAllResponse (activities []activity_repository.ReturnActivity) []ActivityResponse {
+	var formatter []ActivityResponse
+
+	for _, activity := range activities {
+		formatterActivity := ActivityResponse{
+			ActivityId:        activity.ID,
+			ActivityType:      activity.ActivityType,
+			DoneAt:            activity.DoneAt.Format(time.RFC3339Nano),
+			DurationInMinutes: activity.DurationInMinutes,
+			CaloriesBurned:    activity.CaloriesBurned,
+			CreatedAt:         activity.CreatedAt.Format(time.RFC3339Nano),
+			UpdatedAt:         activity.UpdatedAt.Format(time.RFC3339Nano),
+		}
+		formatter = append(formatter, formatterActivity)
+	}
+
+	return formatter
+}
