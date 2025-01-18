@@ -114,7 +114,7 @@ func UpdateActivity(ctx *gin.Context) {
 
 	activity, err = activityService.UpdateActivity(user_id.(string), data_id,*activityRequest)
 	if err != nil {
-		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		ctx.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
 		return
 	}
 
@@ -138,7 +138,7 @@ func DeleteActivity(ctx *gin.Context) {
 
 	_, err = activityService.DeleteActivity(data_id)
 	if err != nil {
-		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		ctx.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
 		return
 	}
 

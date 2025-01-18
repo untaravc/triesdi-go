@@ -5,9 +5,9 @@ type User struct {
 	Preference string 
 	WeightUnit string 
 	HeightUnit string 
-	Weight     int    
-	Height     int   
-	Email	  string 
+	Weight     *int    
+	Height     *int   
+	Email	   string 
 	Name       string 
 	ImageUri   string 
 }

@@ -4,6 +4,8 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"net/url"
+	"strings"
 	"triesdi/app/cache"
 
 	"github.com/go-playground/validator/v10"
@@ -11,10 +13,18 @@ import (
 
 var validate *validator.Validate
 
+func isCompleteURL(fl validator.FieldLevel) bool {
+    u, err := url.Parse(fl.Field().String())
+    return err == nil && u.Scheme != "" && u.Host != "" && strings.Contains(u.Host, ".")
+}
+
 // Initialize the validator
 func InitValidator() *validator.Validate {
 	if validate == nil {
 		validate = validator.New()
+
+		// CUSTOM VALIDATION
+		_ = validate.RegisterValidation("complete_url", isCompleteURL)
 	}
 	return validate
 }

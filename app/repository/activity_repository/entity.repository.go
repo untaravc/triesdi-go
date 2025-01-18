@@ -8,7 +8,7 @@ type Activity struct {
 	ID string
 	UserID string
 	ActivityType string
-	DoneAt time.Time
+	DoneAt string
 	DurationInMinutes int
 	CaloriesBurned int
 }
@@ -28,8 +28,8 @@ type ActivityFilter struct {
 	Limit             int
 	Offset            int
 	ActivityType      string
-	DoneAtFrom        *time.Time
-	DoneAtTo          *time.Time
+	DoneAtFrom        string
+	DoneAtTo          string
 	CaloriesBurnedMin *int
 	CaloriesBurnedMax *int
 }

@@ -1,7 +1,6 @@
 package activity_response
 
 import (
-	"time"
 	"triesdi/app/repository/activity_repository"
 )
 
@@ -19,11 +18,11 @@ func FormatCreateUpdateResponse (activity activity_repository.ReturnActivity) Ac
 	formatter := ActivityResponse{
 		ActivityId:        activity.ID,
 		ActivityType:      activity.ActivityType,
-		DoneAt:            activity.DoneAt.Format(time.RFC3339Nano),
+		DoneAt:            activity.DoneAt.Format("2006-01-02T15:04:05.000Z07:00")[:23] + "Z",
 		DurationInMinutes: activity.DurationInMinutes,
 		CaloriesBurned:    activity.CaloriesBurned,
-		CreatedAt:         activity.CreatedAt.Format(time.RFC3339Nano),
-		UpdatedAt:         activity.UpdatedAt.Format(time.RFC3339Nano),
+		CreatedAt:         activity.CreatedAt.Format("2006-01-02T15:04:05.000Z07:00")[:23] + "Z",
+		UpdatedAt:         activity.UpdatedAt.Format("2006-01-02T15:04:05.000Z07:00")[:23] + "Z",
 	}
 	return formatter
 }
@@ -35,11 +34,11 @@ func FormatGetAllResponse (activities []activity_repository.ReturnActivity) []Ac
 		formatterActivity := ActivityResponse{
 			ActivityId:        activity.ID,
 			ActivityType:      activity.ActivityType,
-			DoneAt:            activity.DoneAt.Format(time.RFC3339Nano),
+			DoneAt:            activity.DoneAt.Format("2006-01-02T15:04:05.000Z07:00")[:23] + "Z",
 			DurationInMinutes: activity.DurationInMinutes,
 			CaloriesBurned:    activity.CaloriesBurned,
-			CreatedAt:         activity.CreatedAt.Format(time.RFC3339Nano),
-			UpdatedAt:         activity.UpdatedAt.Format(time.RFC3339Nano),
+			CreatedAt:         activity.CreatedAt.Format("2006-01-02T15:04:05.000Z07:00")[:23] + "Z",
+			UpdatedAt:         activity.UpdatedAt.Format("2006-01-02T15:04:05.000Z07:00")[:23] + "Z",
 		}
 		formatter = append(formatter, formatterActivity)
 	}

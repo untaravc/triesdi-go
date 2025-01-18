@@ -130,7 +130,7 @@ func LoggerMiddleware() gin.HandlerFunc {
 		// 	label = "GREAT"
 		// }
 
-		if (c.Request.URL.Path == "/v1/user"){
+		// if (c.Request.URL.Path == "/v1/user"){
 
 			// Log the details of the request and response
 			logger.Printf(
@@ -139,6 +139,7 @@ func LoggerMiddleware() gin.HandlerFunc {
 				"URL: %s\n"+
 				"Response Status: %d\n"+
 				"Request Header: %v\n"+
+				"Request Query Parameter: %v\n"+
 				"Request Body: %s\n"+
 				"Response Body: %s\n",
 				startTime.Format(time.RFC1123),
@@ -146,9 +147,10 @@ func LoggerMiddleware() gin.HandlerFunc {
 				c.Request.URL.Path,
 				c.Writer.Status(),
 				c.Request.Header,
+				c.Request.URL.Query(),
 				requestBody,
 				writer.body.String(),
 			)
-		}
+		// }
 	}
 }

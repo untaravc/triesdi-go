@@ -1,9 +1,7 @@
 package activity_service
 
 import (
-	"fmt"
 	"strconv"
-	"strings"
 	"triesdi/app/cache"
 	"triesdi/app/repository/activity_repository"
 	"triesdi/app/requests/activity_request"
@@ -31,7 +29,7 @@ func NewService(repo activity_repository.Repository) *service {
 }
 
 func (s *service) UpdateActivity(user_id string, id string, activity activity_request.ActivityRequest) (activity_repository.ReturnActivity, error) {
-	doneAt, err := time.Parse(time.RFC3339, activity.DoneAt)
+	_, err := time.Parse(time.RFC3339, activity.DoneAt)
 	if err != nil {
 		return activity_repository.ReturnActivity{}, err
 	}
@@ -39,7 +37,7 @@ func (s *service) UpdateActivity(user_id string, id string, activity activity_re
     activityToUpdate := activity_repository.Activity{
         UserID:            user_id,
         ActivityType:      activity.ActivityType,
-        DoneAt:            doneAt,
+        DoneAt:            activity.DoneAt,
         DurationInMinutes: activity.DurationInMinutes,
 		CaloriesBurned:    calculateCaloreisBurned(activity.DurationInMinutes, activity.ActivityType),
     }
@@ -67,28 +65,23 @@ func (s *service) GetActivity(c *gin.Context) ([]activity_repository.ReturnActiv
 	activityType := c.Query("activityType") // No need to validate, invalid value will be ignored
 
 	// Parse and validate doneAtFrom
-	var doneAtFrom *time.Time
 	doneAtFromStr := c.Query("doneAtFrom")
-	if doneAtFromStr != "" {
-		dateStrWithPlus := strings.Replace(doneAtFromStr, " ", "+", 1)
-		parsedTime, err := time.Parse(time.RFC3339Nano, dateStrWithPlus)
-		if err == nil {
-			doneAtFrom = &parsedTime
-		}
-	}
+	// fmt.Printf("doneAtFromStr: %v\n", doneAtFromStr)
+	// if doneAtFromStr != "" {
+	// 	_, err := time.Parse(time.RFC3339Nano, doneAtFromStr)
+	// 	if err != nil {
+	// 		doneAtFromStr = ""
+	// 	}
+	// }
 
 	// Parse and validate doneAtTo
-	var doneAtTo *time.Time
 	doneAtToStr := c.Query("doneAtTo")
-	if doneAtToStr != "" {
-		doneAtToStrTrim := strings.Replace(doneAtToStr, " ", "+", 1)
-		parsedTime, err := time.Parse(time.RFC3339Nano, doneAtToStrTrim)
-		if err == nil {
-			doneAtTo = &parsedTime
-		}
-	}
-
-	fmt.Printf("doneAtTo: %v\n", doneAtTo)
+	// fmt.Printf("doneAtToStr: %v\n", doneAtToStr)
+	// if doneAtToStr != "" {
+	// 	if _, err := time.Parse(time.RFC3339Nano, doneAtToStr); err != nil {
+	// 		doneAtToStr = ""
+	// 	}
+	// }
 
 	// Parse and validate caloriesBurnedMin
 	var caloriesBurnedMin *int
@@ -109,14 +102,14 @@ func (s *service) GetActivity(c *gin.Context) ([]activity_repository.ReturnActiv
 			caloriesBurnedMax = &value
 		}
 	}
-
+	
 	// Construct filter object
 	filters := activity_repository.ActivityFilter{
 		Limit:              limit,
 		Offset:             offset,
 		ActivityType:       activityType,
-		DoneAtFrom:         doneAtFrom,
-		DoneAtTo:           doneAtTo,
+		DoneAtFrom:         doneAtFromStr,
+		DoneAtTo:           doneAtToStr,
 		CaloriesBurnedMin:  caloriesBurnedMin,
 		CaloriesBurnedMax:  caloriesBurnedMax,
 	}
@@ -141,7 +134,7 @@ func (s *service) GetActivity(c *gin.Context) ([]activity_repository.ReturnActiv
 
 func (s *service) CreateActivity(user_id string, activity activity_request.ActivityRequest) (activity_repository.ReturnActivity, error) {
 
-	doneAt, err := time.Parse(time.RFC3339, activity.DoneAt)
+	_, err := time.Parse(time.RFC3339, activity.DoneAt)
 	if err != nil {
 		return activity_repository.ReturnActivity{}, err
 	}
@@ -150,7 +143,7 @@ func (s *service) CreateActivity(user_id string, activity activity_request.Activ
 		ID: uuid.New().String(),
         UserID:            user_id,
         ActivityType:      activity.ActivityType,
-        DoneAt:            doneAt,
+        DoneAt:            activity.DoneAt,
         DurationInMinutes: activity.DurationInMinutes,
         CaloriesBurned:    calculateCaloreisBurned(activity.DurationInMinutes, activity.ActivityType),
     }

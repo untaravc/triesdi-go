@@ -2,6 +2,7 @@ package activity_repository
 
 import (
 	"errors"
+	"fmt"
 
 	"gorm.io/gorm"
 )
@@ -45,12 +46,14 @@ func (r *repository) GetActivity(user_id string, filters ActivityFilter) ([]Retu
 		query = query.Where("activity_type = ?", filters.ActivityType)
 	}
 
-	if filters.DoneAtFrom != nil {
+	if filters.DoneAtFrom != "" {
 		query = query.Where("done_at >= ?", filters.DoneAtFrom)
+		fmt.Printf("querys from: %v\n", "done_at >= "+filters.DoneAtFrom)
 	}
 
-	if filters.DoneAtTo != nil {
+	if filters.DoneAtTo != "" {
 		query = query.Where("done_at <= ?", filters.DoneAtTo)
+		fmt.Printf("querys to: %v\n", "done_at <= "+filters.DoneAtTo)
 	}
 
 	if filters.CaloriesBurnedMin != nil {

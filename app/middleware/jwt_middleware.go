@@ -17,10 +17,11 @@ func JWTMiddleware() gin.HandlerFunc {
 			return
 		}
 
-		// Only check Content-Type for PATCH and POST methods
-		if c.Request.Method == http.MethodPatch || c.Request.Method == http.MethodPost {
-			// If Content Type is empty or not application/json
-			if c.ContentType() != "application/json" {
+		// Only check Content-Type for PATCH and POST methods exclude FILE
+		if (c.Request.Method == http.MethodPatch || c.Request.Method == http.MethodPost) && !strings.Contains(c.ContentType(), "multipart/form-data") {
+
+			// If Content Type is empty or not application/json and url not v1/file
+			if c.ContentType() != "application/json" && !strings.Contains(c.Request.URL.Path, "/v1/file") {
 				c.JSON(http.StatusBadRequest, gin.H{"error": "Unsupported Media Type"})
 				c.Abort()
 				return

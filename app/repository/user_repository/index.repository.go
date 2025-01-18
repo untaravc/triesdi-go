@@ -2,6 +2,7 @@ package user_repository
 
 import (
 	"errors"
+	"fmt"
 
 	"gorm.io/gorm"
 )
@@ -23,6 +24,7 @@ func (r *repository) UpdateUser(id string,user User) (User, error) {
 	if err := r.db.Model(&User{}).Where("id = ?", id).Updates(user).Error; err != nil {
 		return user, err
 	}
+	
 	return user, nil
 }
 
@@ -34,6 +36,9 @@ func (r *repository) GetUser(id string) (User, error) {
 		}
 		return user, err
 	}
+
+	fmt.Println(user)
+	
 	return user, nil
 }
 
