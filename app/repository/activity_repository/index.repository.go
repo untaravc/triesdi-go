@@ -2,7 +2,6 @@ package activity_repository
 
 import (
 	"errors"
-	"fmt"
 
 	"gorm.io/gorm"
 )
