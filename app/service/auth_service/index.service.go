@@ -2,6 +2,7 @@ package auth_service
 
 import (
 	"errors"
+	"fmt"
 	"net/http"
 	"triesdi/app/repository/auth_repository"
 	"triesdi/app/responses/response"
@@ -47,6 +48,8 @@ func (s *service) CreateUser(email, password string) (response.AuthResponse, int
 		Token: token,
 	}
 
+	fmt.Printf("Register: %v\n", authResponse)
+
 	return authResponse, http.StatusCreated, nil
 }
 
@@ -73,6 +76,8 @@ func (s *service) Login(email, password string) (response.AuthResponse, int, err
 		Email: user.Email,
 		Token: token,
 	}
+
+	fmt.Printf("Login: %v\n", authResponse)
 
 	return authResponse, http.StatusOK, nil
 }

@@ -120,40 +120,35 @@ func LoggerMiddleware() gin.HandlerFunc {
 		c.Next()
 
 		// Calculate the duration of the request
-		duration := time.Since(startTime).Milliseconds()
+		// duration := time.Since(startTime).Milliseconds()
 
 		// Determine the response label
-		label := "OK"
-		if duration > 1000 {
-			label = "SLOW_RESPONSE"
-		} else if duration < 200 {
-			label = "GREAT"
-		}
+		// label := "OK"
+		// if duration > 1000 {
+		// 	label = "SLOW_RESPONSE"
+		// } else if duration < 200 {
+		// 	label = "GREAT"
+		// }
 
-		// Log the details of the request and response
-		logger.Printf(
-			"\nRequest Time: %s\n"+
-				"Client IP: %s\n"+
+		if (c.Request.URL.Path == "/v1/user"){
+
+			// Log the details of the request and response
+			logger.Printf(
+				"\nRequest Time: %s\n"+
 				"Method: %s\n"+
 				"URL: %s\n"+
 				"Response Status: %d\n"+
-				"Request Duration: %d ms\n"+
-				"Label: %s\n"+
+				"Request Header: %v\n"+
 				"Request Body: %s\n"+
-				"Response Body: %s\n"+
-				"User Agent: %s\n"+
-				"Referer: %s\n",
-			startTime.Format(time.RFC1123),
-			c.ClientIP(),
-			c.Request.Method,
-			c.Request.URL.Path,
-			c.Writer.Status(),
-			duration,
-			label,
-			requestBody,
-			writer.body.String(),
-			c.Request.UserAgent(),
-			c.Request.Referer(),
-		)
+				"Response Body: %s\n",
+				startTime.Format(time.RFC1123),
+				c.Request.Method,
+				c.Request.URL.Path,
+				c.Writer.Status(),
+				c.Request.Header,
+				requestBody,
+				writer.body.String(),
+			)
+		}
 	}
 }
