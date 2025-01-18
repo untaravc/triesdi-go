@@ -31,6 +31,9 @@ func InitRoute(app *gin.Engine) {
 	route.PATCH("/v1/activity/:id", v1_activity_controller.UpdateActivity)
 	route.DELETE("/v1/activity/:id", v1_activity_controller.DeleteActivity)
 
+	// Activity
+	route.GET("/v1/activity", v1_activity_controller.GetActivities)
+
 	// Image
 	route.POST("/v1/file", v1_upload_controller.UploadImage)
 }
