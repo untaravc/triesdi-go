@@ -48,12 +48,10 @@ func (r *repository) GetActivity(user_id string, filters ActivityFilter) ([]Retu
 
 	if filters.DoneAtFrom != "" {
 		query = query.Where("done_at >= ?", filters.DoneAtFrom)
-		fmt.Printf("querys from: %v\n", "done_at >= "+filters.DoneAtFrom)
 	}
 
 	if filters.DoneAtTo != "" {
 		query = query.Where("done_at <= ?", filters.DoneAtTo)
-		fmt.Printf("querys to: %v\n", "done_at <= "+filters.DoneAtTo)
 	}
 
 	if filters.CaloriesBurnedMin != nil {
