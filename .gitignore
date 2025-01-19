@@ -43,5 +43,9 @@ testdata/
 tmp/
 
 .env
+.env.local
+.env.development
+.env.production
+.env.test
 .air.toml
 tmp/

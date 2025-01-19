@@ -1,6 +1,7 @@
 package bootstrap
 
 import (
+	"fmt"
 	"log"
 	"os"
 	"triesdi/app/cache"
@@ -17,16 +18,36 @@ import (
 	"github.com/joho/godotenv"
 )
 
+func loadEnv() {
+	env := os.Getenv("ENV")
+	var err error
+
+	switch env {
+	case "production":
+		fmt.Println("Loading production environment variables")
+		err = godotenv.Load("/home/yourusername/.env")
+	case "development":
+		fmt.Println("Loading development environment variables")
+		err = godotenv.Load(".env.development")
+	case "local":
+		fmt.Println("Loading local environment variables")
+		err = godotenv.Load(".env.local")
+	default:
+		fmt.Println("Loading default environment variables")
+		err = godotenv.Load()
+	}
+
+	if err != nil {
+		log.Fatalf("Error loading .env file: %v", err)
+	}
+}
+
 func BootstrapApp() {
 
 	// Initialize cache
 	cache.InitializeCacheActivityTypes()
 
-	err := godotenv.Load()
-
-	if err != nil {
-		log.Println("Error loading .env file")
-	}
+	loadEnv();
 
 	configs.InitConfig()
 
