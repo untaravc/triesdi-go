@@ -11,7 +11,6 @@ import (
 	"triesdi/app/configs/cors_config"
 
 	"triesdi/app/configs/db_config"
-	"triesdi/app/configs/log_config"
 	"triesdi/app/routes"
 
 	"github.com/gin-gonic/gin"
@@ -24,8 +23,7 @@ func loadEnv() {
 
 	switch env {
 	case "production":
-		fmt.Println("Loading production environment variables")
-		err = godotenv.Load("/home/yourusername/.env")
+		err = godotenv.Load(".env.production")
 	case "development":
 		fmt.Println("Loading development environment variables")
 		err = godotenv.Load(".env.development")
@@ -66,7 +64,7 @@ func BootstrapApp() {
 	app := gin.Default()
 
 	app.Use(cors_config.CORSMiddleware())
-	app.Use(log_config.LoggerMiddleware())
+	// app.Use(log_config.LoggerMiddleware())
 
 	db_config.ConnectDatabase()
 	// db_config.InitRedisClient()

@@ -1,15 +1,40 @@
 package middleware
 
 import (
+	"context"
 	"net/http"
 	"strings"
+	"time"
 	"triesdi/app/utils"
 
 	"github.com/gin-gonic/gin"
 )
 
-func JWTMiddleware() gin.HandlerFunc {
+func processTimeout(h gin.HandlerFunc, duration time.Duration) gin.HandlerFunc {
 	return func(c *gin.Context) {
+		ctx, cancel := context.WithTimeout(c.Request.Context(), duration)
+		defer cancel()
+
+		c.Request = c.Request.WithContext(ctx)
+
+		processDone := make(chan bool)
+		go func() {
+			h(c)
+			processDone <- true
+		}()
+
+		select {
+		case <-ctx.Done():
+			c.JSON(http.StatusGatewayTimeout, gin.H{"error": "timeout wkwkwk"})
+			c.Abort()
+		case <-processDone:
+		}
+	}
+}
+
+func JWTMiddleware() gin.HandlerFunc {
+	return processTimeout(func(c *gin.Context) {
+		
 		tokenString := c.Request.Header.Get("Authorization")
 		if tokenString == "" {
 			c.JSON(http.StatusUnauthorized, gin.H{"error": "Authorization header is missing"})
@@ -49,5 +74,5 @@ func JWTMiddleware() gin.HandlerFunc {
 		c.Set("id", claims.ID)
 
 		c.Next()
-	}
+	}, 2*time.Second)
 }

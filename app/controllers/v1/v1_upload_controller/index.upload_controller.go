@@ -21,6 +21,8 @@ import (
 // environment variables. The server will return a JSON response with the file URL, which
 // can be used to access the uploaded file.
 
+var uploadChannel = make(chan struct{}, 10)
+
 func UploadImage(ctx *gin.Context) {
 
 	awsAccessKey := os.Getenv("AWS_ACCESS_KEY_ID")
@@ -64,7 +66,10 @@ func UploadImage(ctx *gin.Context) {
 
 	fileURL := fmt.Sprintf("https://%s.s3.%s.amazonaws.com/%s", s3Bucket, awsRegion, fileName)
 
+    uploadChannel <- struct{}{} // Acquire a slot
     go func() {
+        defer func() { <-uploadChannel }() // Release the slot
+
         _, err := uploadService.UploadFile(file, header, fileName)
         if err != nil {
             response.BaseResponse(ctx, http.StatusInternalServerError, false, "Internal System Error", gin.H{"error": err.Error()})
