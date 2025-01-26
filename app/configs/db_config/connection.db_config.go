@@ -1,30 +1,31 @@
 package db_config
 
 import (
+	"database/sql"
 	"fmt"
 	"log"
 
-	"gorm.io/driver/mysql"
-	"gorm.io/gorm"
+	_ "github.com/lib/pq"
 )
 
-var DB *gorm.DB
+var DB *sql.DB
 
-func ConnectDatabase() {
-	var errConnection error
-	if DB_DRIVER == "mysql" {
-		dsnMysql := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=Local", DB_USER, DB_PASSWORD, DB_HOST, DB_PORT, DB_NAME)
-		DB, errConnection = gorm.Open(mysql.Open(dsnMysql), &gorm.Config{})
+func InitDatabase() {
+	var err error
+	// Replace with your PostgreSQL connection string
+	connStr := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable", DB_HOST, DB_PORT, DB_USER, DB_PASSWORD, DB_NAME)
+
+	// Open database connection
+	DB, err = sql.Open("postgres", connStr)
+	if err != nil {
+		log.Fatal("Failed to connect to the database:", err)
 	}
 
-	if errConnection != nil {
-		panic("Failed to connect to database: " + DB_DRIVER)
+	// Test the connection
+	err = DB.Ping()
+	if err != nil {
+		log.Fatal("Database connection test failed:", err)
 	}
 
-	log.Println("Connected to DATABASE")
-}
-
-// GetDB returns the initialized DB instance
-func GetDB() *gorm.DB {
-	return DB
+	log.Println("Database connected successfully!")
 }

@@ -45,3 +45,5 @@ tmp/
 .env
 .air.toml
 tmp/
+
+main

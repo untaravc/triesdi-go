@@ -34,7 +34,7 @@ func BootstrapApp() {
 		switch os.Args[1] {
 		case "migrate":
 			log.Println("Running migrations...")
-			commands.RunMigration()
+			commands.RunMigrationPostgres()
 			return
 		}
 	}
@@ -47,7 +47,8 @@ func BootstrapApp() {
 	app.Use(cors_config.CORSMiddleware())
 	app.Use(log_config.LoggerMiddleware())
 
-	db_config.ConnectDatabase()
+	db_config.InitDatabase()
+	defer db_config.DB.Close()
 	// db_config.InitRedisClient()
 
 	routes.InitRoute(app)
