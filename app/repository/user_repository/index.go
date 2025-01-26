@@ -39,7 +39,7 @@ func GetUsers(filter UserFilter) ([]User, error) {
 			return nil, err
 		}
 
-		users = append(users, User{Id: id, Phone: sql.NullString{String: phone}, Email: sql.NullString{String: phone}, Password: password})
+		users = append(users, User{Id: id, Phone: sql.NullString{String: phone}, Email: sql.NullString{String: email}, Password: password})
 	}
 
 	return users, nil

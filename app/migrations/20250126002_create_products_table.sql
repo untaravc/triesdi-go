@@ -1,6 +1,7 @@
 DROP TABLE IF EXISTS products;
 CREATE TABLE products (
     product_id SERIAL PRIMARY KEY,
+    user_id INT NOT NULL,
     name VARCHAR(255) NOT NULL,
     category VARCHAR(255) NOT NULL,
     qty INT NOT NULL,
@@ -14,3 +15,4 @@ CREATE TABLE products (
 );
 CREATE INDEX idx_products_category ON products (category);
 CREATE INDEX idx_products_sku ON products (sku);
+CREATE INDEX idx_products_user_id ON products (user_id);
