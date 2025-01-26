@@ -21,13 +21,13 @@ type UserResponse struct {
 
 func UserToUserResponse(user user_repository.User) UserResponse {
 	return UserResponse{
-		Email:             user.Email,
-		Phone:             user.Phone,
-		FileId:            user.FileId,
-		FileUri:           user.FileUri,
-		FileThumbnailUri:  user.FileThumbnailUri,
-		BankAccountName:   user.BankAccountName,
-		BankAccountHolder: user.BankAccountHolder,
-		BankAccountNumber: user.BankAccountNumber,
+		Email:             user.Email.String,
+		Phone:             user.Phone.String,
+		FileId:            user.FileId.String,
+		FileUri:           user.FileUri.String,
+		FileThumbnailUri:  user.FileThumbnailUri.String,
+		BankAccountName:   user.BankAccountName.String,
+		BankAccountHolder: user.BankAccountHolder.String,
+		BankAccountNumber: user.BankAccountNumber.String,
 	}
 }

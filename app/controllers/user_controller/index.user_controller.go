@@ -1,6 +1,7 @@
 package user_controller
 
 import (
+	"database/sql"
 	"net/http"
 	"triesdi/app/repository/file_repository"
 	"triesdi/app/repository/user_repository"
@@ -28,14 +29,14 @@ func Auth(c *gin.Context) {
 	}
 
 	user_response := user_response.UserResponse{
-		Email:             users[0].Email,
-		Phone:             users[0].Phone,
-		FileId:            users[0].FileId,
-		BankAccountName:   users[0].BankAccountName,
-		BankAccountHolder: users[0].BankAccountHolder,
-		BankAccountNumber: users[0].BankAccountNumber,
-		FileUri:           users[0].FileUri,
-		FileThumbnailUri:  users[0].FileThumbnailUri,
+		Email:             users[0].Email.String,
+		Phone:             users[0].Phone.String,
+		FileId:            users[0].FileId.String,
+		BankAccountName:   users[0].BankAccountName.String,
+		BankAccountHolder: users[0].BankAccountHolder.String,
+		BankAccountNumber: users[0].BankAccountNumber.String,
+		FileUri:           users[0].FileUri.String,
+		FileThumbnailUri:  users[0].FileThumbnailUri.String,
 	}
 	c.JSON(http.StatusOK, user_response)
 }
@@ -56,10 +57,10 @@ func Update(c *gin.Context) {
 	// file := file_repository.File{}
 
 	update := user_repository.User{
-		FileId:            user_request.FileId,
-		BankAccountName:   user_request.BankAccountName,
-		BankAccountHolder: user_request.BankAccountHolder,
-		BankAccountNumber: user_request.BankAccountNumber,
+		FileId:            sql.NullString{String: user_request.FileId, Valid: true},
+		BankAccountName:   sql.NullString{String: user_request.BankAccountName, Valid: true},
+		BankAccountHolder: sql.NullString{String: user_request.BankAccountHolder, Valid: true},
+		BankAccountNumber: sql.NullString{String: user_request.BankAccountNumber, Valid: true},
 	}
 	// get file
 	if user_request.FileId != "" {
@@ -70,8 +71,8 @@ func Update(c *gin.Context) {
 			return
 		}
 
-		update.FileUri = file.FileUri
-		update.FileThumbnailUri = file.FileThumbnailUri
+		update.FileUri = sql.NullString{String: file.FileUri, Valid: true}
+		update.FileThumbnailUri = sql.NullString{String: file.FileThumbnailUri, Valid: true}
 	}
 
 	// get auth user
@@ -88,6 +89,80 @@ func Update(c *gin.Context) {
 	c.JSON(http.StatusOK, user_response.UserToUserResponse(ruser))
 }
 
-func LinkPhone(c *gin.Context) {}
+func LinkPhone(c *gin.Context) {
+	link_phone_request := user_request.LinkPhoneRequest{}
 
-func LinkEmail(c *gin.Context) {}
+	if err := c.ShouldBindJSON(&link_phone_request); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	if err := validator.ValidateStruct(link_phone_request); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": validator.FormatValidationError(err)})
+		return
+	}
+
+	// get auth user
+	auth_user := jwt.GetAuth(c)
+
+	// validate unique
+	user, _ := user_repository.UniqueUser(user_repository.User{
+		Id:    auth_user.Id,
+		Phone: sql.NullString{String: link_phone_request.Phone, Valid: true},
+	})
+
+	if user.Id != "" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "phone already exists"})
+		return
+	}
+
+	// update user
+	ruser, err_user := user_repository.UpdateUser(user_repository.User{Phone: sql.NullString{String: link_phone_request.Phone, Valid: true}}, auth_user.Id)
+
+	if err_user != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err_user.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, user_response.UserToUserResponse(ruser))
+}
+
+func LinkEmail(c *gin.Context) {
+	link_email_request := user_request.LinkEmailRequest{}
+
+	if err := c.ShouldBindJSON(&link_email_request); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	if err := validator.ValidateStruct(link_email_request); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": validator.FormatValidationError(err)})
+		return
+	}
+
+	// get auth user
+	auth_user := jwt.GetAuth(c)
+
+	// validate unique
+	user, _ := user_repository.UniqueUser(user_repository.User{
+		Id:    auth_user.Id,
+		Email: sql.NullString{String: link_email_request.Email, Valid: true},
+	})
+
+	if user.Id != "" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "email already exists"})
+		return
+	}
+
+	// update user
+	ruser, err_user := user_repository.UpdateUser(user_repository.User{
+		Email: sql.NullString{String: link_email_request.Email, Valid: true}},
+		auth_user.Id)
+
+	if err_user != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err_user.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, user_response.UserToUserResponse(ruser))
+}

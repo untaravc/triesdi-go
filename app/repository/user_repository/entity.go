@@ -1,19 +1,24 @@
 package user_repository
 
+import (
+	"database/sql"
+	"time"
+)
+
 type User struct {
-	Id                int    `json:"id"`
-	Email             string `json:"email"`
-	Phone             string `json:"phone"`
-	Password          string `json:"password"`
-	Token             string `json:"token"`
-	FileId            string `json:"file_id"`
-	BankAccountName   string `json:"bank_account_name"`
-	BankAccountHolder string `json:"bank_account_holder"`
-	BankAccountNumber string `json:"bank_account_number"`
-	FileUri           string `json:"file_uri"`
-	FileThumbnailUri  string `json:"file_thumbnail_uri"`
-	CreatedAt         string `json:"created_at"`
-	UpdatedAt         string `json:"updated_at"`
+	Id                string         `json:"id"`
+	Email             sql.NullString `json:"email"`
+	Phone             sql.NullString `json:"phone"`
+	Password          string         `json:"password"`
+	Token             string         `json:"token"`
+	FileId            sql.NullString `json:"file_id"`
+	BankAccountName   sql.NullString `json:"bank_account_name"`
+	BankAccountHolder sql.NullString `json:"bank_account_holder"`
+	BankAccountNumber sql.NullString `json:"bank_account_number"`
+	FileUri           sql.NullString `json:"file_uri"`
+	FileThumbnailUri  sql.NullString `json:"file_thumbnail_uri"`
+	CreatedAt         time.Time      `json:"created_at"`
+	UpdatedAt         time.Time      `json:"updated_at"`
 }
 
 type UserFilter struct {

@@ -1,6 +1,7 @@
 package auth_controller
 
 import (
+	"database/sql"
 	"net/http"
 	"strconv"
 	"triesdi/app/repository/user_repository"
@@ -39,7 +40,7 @@ func LoginEmail(c *gin.Context) {
 		return
 	}
 
-	token, err := jwt.GenerateToken(strconv.Itoa(users[0].Id), users[0].Email, users[0].Phone)
+	token, err := jwt.GenerateToken(users[0].Id, users[0].Email.String, users[0].Phone.String)
 
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
@@ -47,8 +48,8 @@ func LoginEmail(c *gin.Context) {
 	}
 
 	auth_response := user_response.AuthResponse{
-		Email: users[0].Email,
-		Phone: users[0].Phone,
+		Email: users[0].Email.String,
+		Phone: users[0].Phone.String,
 		Token: token,
 	}
 
@@ -81,7 +82,7 @@ func LoginPhone(c *gin.Context) {
 		return
 	}
 
-	token, err := jwt.GenerateToken(strconv.Itoa(users[0].Id), users[0].Email, users[0].Phone)
+	token, err := jwt.GenerateToken(users[0].Id, users[0].Email.String, users[0].Phone.String)
 
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
@@ -89,8 +90,8 @@ func LoginPhone(c *gin.Context) {
 	}
 
 	auth_response := user_response.AuthResponse{
-		Email: users[0].Email,
-		Phone: users[0].Phone,
+		Email: users[0].Email.String,
+		Phone: users[0].Phone.String,
 		Token: token,
 	}
 
@@ -118,7 +119,7 @@ func RegisterEmail(c *gin.Context) {
 	}
 
 	user := user_repository.User{
-		Email:    register_email_request.Email,
+		Email:    sql.NullString{String: register_email_request.Email},
 		Password: register_email_request.Password,
 	}
 
@@ -129,13 +130,13 @@ func RegisterEmail(c *gin.Context) {
 		return
 	}
 
-	token, err := jwt.GenerateToken(strconv.Itoa(id), user.Email, user.Phone)
+	token, err := jwt.GenerateToken(strconv.Itoa(id), user.Email.String, user.Phone.String)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 
-	auth_response := user_response.AuthResponse{Email: user.Email, Phone: "", Token: token}
+	auth_response := user_response.AuthResponse{Email: user.Email.String, Phone: "", Token: token}
 	c.JSON(200, auth_response)
 }
 
@@ -160,7 +161,7 @@ func RegisterPhone(c *gin.Context) {
 	}
 
 	user := user_repository.User{
-		Phone:    register_phone_request.Phone,
+		Phone:    sql.NullString{String: register_phone_request.Phone},
 		Password: register_phone_request.Password,
 	}
 
@@ -171,12 +172,12 @@ func RegisterPhone(c *gin.Context) {
 		return
 	}
 
-	token, err := jwt.GenerateToken(strconv.Itoa(id), user.Email, user.Phone)
+	token, err := jwt.GenerateToken(strconv.Itoa(id), user.Email.String, user.Phone.String)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 
-	auth_response := user_response.AuthResponse{Email: "", Phone: user.Phone, Token: token}
+	auth_response := user_response.AuthResponse{Email: "", Phone: user.Phone.String, Token: token}
 	c.JSON(200, auth_response)
 }
