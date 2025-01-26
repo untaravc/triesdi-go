@@ -1,4 +1,4 @@
-package utils
+package jwt
 
 import (
 	"errors"
@@ -6,21 +6,25 @@ import (
 	"time"
 
 	"github.com/dgrijalva/jwt-go"
+	"github.com/gin-gonic/gin"
 )
 
 var jwtSecret = []byte(os.Getenv("JWT_SECRET_KEY"))
 
-type Claims struct {
-	ID string `json:"id"`
+type ClaimData struct {
+	Id    string `json:"id"`
 	Email string `json:"email"`
+	Phone string `json:"phone"`
 	jwt.StandardClaims
 }
 
-func GenerateToken(email string, id string) (string, error) {
+func GenerateToken(id string, email string, phone string) (string, error) {
 	expirationTime := time.Now().Add(24 * time.Hour)
-	claims := &Claims{
+
+	claims := &ClaimData{
+		Id:    id,
 		Email: email,
-		ID: id,
+		Phone: phone,
 		StandardClaims: jwt.StandardClaims{
 			ExpiresAt: expirationTime.Unix(),
 		},
@@ -30,8 +34,8 @@ func GenerateToken(email string, id string) (string, error) {
 	return token.SignedString(jwtSecret)
 }
 
-func ValidateToken(tokenString string) (*Claims, error) {
-	claims := &Claims{}
+func ValidateToken(tokenString string) (*ClaimData, error) {
+	claims := &ClaimData{}
 	token, err := jwt.ParseWithClaims(tokenString, claims, func(token *jwt.Token) (interface{}, error) {
 		return jwtSecret, nil
 	})
@@ -40,4 +44,9 @@ func ValidateToken(tokenString string) (*Claims, error) {
 		return nil, errors.New("invalid token")
 	}
 	return claims, nil
+}
+
+func GetAuth(ctx *gin.Context) ClaimData {
+	data_auth, _ := ctx.Get("auth_user")
+	return data_auth.(ClaimData)
 }

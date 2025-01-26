@@ -1,8 +1,8 @@
 DROP TABLE IF EXISTS users;
 CREATE TABLE users (
     id SERIAL PRIMARY KEY,
-    email VARCHAR(255) UNIQUE,
-    phone VARCHAR(20) UNIQUE,
+    email VARCHAR(255),
+    phone VARCHAR(20),
     password VARCHAR(255) NOT NULL,
     token VARCHAR(255),
     file_id VARCHAR(255),

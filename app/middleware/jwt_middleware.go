@@ -3,7 +3,7 @@ package middleware
 import (
 	"net/http"
 	"strings"
-	"triesdi/app/utils"
+	"triesdi/app/utils/jwt"
 
 	"github.com/gin-gonic/gin"
 )
@@ -20,7 +20,7 @@ func JWTMiddleware() gin.HandlerFunc {
 		// Only check Content-Type for PATCH and POST methods
 		if c.Request.Method == http.MethodPatch || c.Request.Method == http.MethodPost {
 			// If Content Type is empty or not application/json
-			if c.ContentType() != "application/json" {
+			if c.ContentType() != "application/json" && c.ContentType() != "multipart/form-data" {
 				c.JSON(http.StatusBadRequest, gin.H{"error": "Unsupported Media Type"})
 				c.Abort()
 				return
@@ -35,7 +35,7 @@ func JWTMiddleware() gin.HandlerFunc {
 
 		tokenString = strings.TrimPrefix(tokenString, "Bearer ")
 
-		claims, err := utils.ValidateToken(tokenString)
+		claims, err := jwt.ValidateToken(tokenString)
 
 		if err != nil {
 			c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid token"})
@@ -43,9 +43,9 @@ func JWTMiddleware() gin.HandlerFunc {
 			return
 		}
 
+		jwt_auth := jwt.ClaimData{Id: claims.Id, Email: claims.Email, Phone: claims.Phone}
 		// You can set the claims to the context if needed
-		c.Set("email", claims.Email)
-		c.Set("id", claims.ID)
+		c.Set("auth_user", jwt_auth)
 
 		c.Next()
 	}

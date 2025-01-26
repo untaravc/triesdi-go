@@ -14,3 +14,4 @@ CREATE TABLE purchase_details (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+CREATE INDEX idx_purchase_details_user_id ON purchase_details (purchase_id);

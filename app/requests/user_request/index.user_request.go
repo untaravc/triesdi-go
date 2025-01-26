@@ -1,13 +1,12 @@
 package user_request
 
 type UserRequest struct {
-	Preference string `json:"preference" validate:"required,oneof=CARDIO WEIGHT"`
-	WeightUnit string `json:"weightUnit" validate:"required,oneof=KG LBS"`
-	HeightUnit string `json:"heightUnit" validate:"required,oneof=CM INCH"`
-	Weight     int    `json:"weight" validate:"required,min=10,max=1000"`
-	Height     int    `json:"height" validate:"required,min=3,max=250"`
-	Name       string `json:"name" validate:"omitempty,min=2,max=60"`
-	ImageUri   string `json:"imageUri" validate:"omitempty,uri"`
+	// "fileId": "", // string | not required | should be a valid fileId
+	// "bankAccountName": "", // string | required | minLength: 4 | maxLength | 32
+	// "bankAccountHolder": "", // string | required | minLength: 4 | maxLength | 32
+	// "bankAccountNumber": "", // string | required | minLength: 4 | maxLength | 32
+	FileId            string `json:"fileId" validate:"alphanumunicode"`
+	BankAccountName   string `json:"bankAccountName" validate:"required,min=4,max=32"`
+	BankAccountHolder string `json:"bankAccountHolder" validate:"required,min=4,max=32"`
+	BankAccountNumber string `json:"bankAccountNumber" validate:"required,min=4,max=32"`
 }
-
-

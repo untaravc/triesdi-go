@@ -9,3 +9,5 @@ CREATE TABLE purchases (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+CREATE INDEX idx_purchases_user_id ON purchases (user_id);
+CREATE INDEX idx_purchases_purchase_id ON purchases (purchase_id);
