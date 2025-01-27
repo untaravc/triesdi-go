@@ -19,7 +19,7 @@ func InitRoute(app *gin.Engine) {
 	route.POST("/v1/register/email", auth_controller.RegisterEmail)
 	route.POST("/v1/register/phone", auth_controller.RegisterPhone)
 
-	route.GET("/v1/product")
+	route.GET("/v1/product", product_controller.GetAll)
 
 	// Assign Middleware
 	JWTMiddleware := middleware.JWTMiddleware()
@@ -36,6 +36,6 @@ func InitRoute(app *gin.Engine) {
 
 	// Product
 	route.POST("/v1/product", product_controller.Store)
-	route.PUT("/v1/product/:product_id")
-	route.DELETE("/v1/product/:product_id")
+	route.PUT("/v1/product/:product_id", product_controller.Update)
+	route.DELETE("/v1/product/:product_id", product_controller.Delete)
 }
