@@ -1,6 +1,6 @@
 package category_repository
 
-var Category = []string{
+var Categories = []string{
 	"Food",
 	"Beverage",
 	"Clothes",

@@ -38,6 +38,10 @@ func GetAll(filter product_request.ProductFilter) ([]Product, error) {
 		conditions = append(conditions, fmt.Sprintf("category = '%s'", filter.Category))
 	}
 
+	if len(filter.ProductIds) > 0 {
+		conditions = append(conditions, fmt.Sprintf("product_id IN ('%s')", strings.Join(filter.ProductIds, "','")))
+	}
+
 	if len(conditions) > 0 {
 		query += " WHERE " + strings.Join(conditions, " AND ")
 	}

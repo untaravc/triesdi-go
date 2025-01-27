@@ -2,10 +2,8 @@ package common
 
 import (
 	"encoding/json"
-	"errors"
 	"fmt"
 	"math/rand"
-	"triesdi/app/cache"
 
 	"golang.org/x/crypto/bcrypt"
 )
@@ -29,15 +27,6 @@ func ConsoleLog(data ...interface{}) {
 
 	// Print the formatted JSON
 	fmt.Println(string(jsonBytes))
-}
-
-// GetCaloriesPerMinute retrieves the calories per minute for a valid activity type
-func GetCaloriesPerMinute(activityType string) (int, error) {
-	calories, exists := cache.ActivityTypeCache[activityType]
-	if !exists {
-		return 0, errors.New("invalid activity type")
-	}
-	return calories, nil
 }
 
 var charset = []byte("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890")

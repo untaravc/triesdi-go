@@ -3,6 +3,7 @@ package routes
 import (
 	"triesdi/app/controllers/auth_controller"
 	"triesdi/app/controllers/product_controller"
+	"triesdi/app/controllers/purchase_controller"
 	"triesdi/app/controllers/upload_controller"
 	"triesdi/app/controllers/user_controller"
 	"triesdi/app/middleware"
@@ -20,6 +21,7 @@ func InitRoute(app *gin.Engine) {
 	route.POST("/v1/register/phone", auth_controller.RegisterPhone)
 
 	route.GET("/v1/product", product_controller.GetAll)
+	route.POST("/v1/purchase", purchase_controller.Create)
 
 	// Assign Middleware
 	JWTMiddleware := middleware.JWTMiddleware()

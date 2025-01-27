@@ -2,9 +2,7 @@ package validator
 
 import (
 	"encoding/json"
-	"errors"
 	"fmt"
-	"triesdi/app/cache"
 
 	"github.com/go-playground/validator/v10"
 )
@@ -25,10 +23,10 @@ func ValidateStruct(s interface{}) error {
 	return v.Struct(s)
 }
 
-//Formatting message validation Error
+// Formatting message validation Error
 func FormatValidationError(err error) []string {
 	var errors []string
-	
+
 	// Handle validation errors
 	if validationErrs, ok := err.(validator.ValidationErrors); ok {
 		for _, e := range validationErrs {
@@ -50,15 +48,4 @@ func FormatValidationError(err error) []string {
 	}
 
 	return errors
-} 
-
-
-// ValidateActivityType validates if the provided activity type is valid
-func ValidateActivityType(activityType string) error {
-	if _, exists := cache.ActivityTypeCache[activityType]; !exists {
-		return errors.New("invalid activity type")
-	}
-	return nil
 }
-
-

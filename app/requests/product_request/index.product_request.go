@@ -25,12 +25,13 @@ type ProductUpdateRequest struct {
 }
 
 type ProductFilter struct {
-	Limit     int    `json:"limit"`
-	Offset    int    `json:"offset"`
-	ProductId string `json:"productId"`
-	Sku       string `json:"sku"`
-	Category  string `json:"category"`
-	SortBy    string `json:"sortBy"`
+	Limit      int      `json:"limit"`
+	Offset     int      `json:"offset"`
+	ProductId  string   `json:"productId"`
+	Sku        string   `json:"sku"`
+	Category   string   `json:"category"`
+	SortBy     string   `json:"sortBy"`
+	ProductIds []string `json:"productIds"`
 }
 
 func FilterToProductFilter(c *gin.Context) ProductFilter {
