@@ -6,6 +6,7 @@ import (
 	"triesdi/app/repository/purchase_repository"
 	"triesdi/app/requests/product_request"
 	"triesdi/app/requests/purchase_request"
+	"triesdi/app/utils/common"
 	"triesdi/app/utils/validator"
 
 	"github.com/gin-gonic/gin"
@@ -47,7 +48,7 @@ func Create(c *gin.Context) {
 
 	// Get products
 	products, err := product_repository.GetAll(product_request.ProductFilter{ProductIds: productIds})
-
+	common.ConsoleLog(products)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
@@ -61,6 +62,7 @@ func Create(c *gin.Context) {
 				valid = true
 
 				purchase_details = append(purchase_details, purchase_repository.PurchaseDetail{
+					UserId:           product.UserId,
 					ProductId:        purchaseItem.ProductId,
 					Qty:              purchaseItem.Qty,
 					Name:             product.Name,

@@ -11,19 +11,25 @@ import (
 const DB_NAME = "users"
 
 func GetUsers(filter UserFilter) ([]User, error) {
-	selector := "id, phone, email, password"
+	selector := "id, phone, email, password, file_id, file_uri, file_thumbnail_uri, bank_account_name, bank_account_holder, bank_account_number"
 	query := fmt.Sprintf("SELECT %s FROM %s", selector, DB_NAME)
 
+	conditions := make([]string, 0)
 	if filter.Email != "" {
-		query += fmt.Sprintf(" WHERE email = '%s'", filter.Email)
+		conditions = append(conditions, fmt.Sprintf("email = '%s'", filter.Email))
 	}
 
 	if filter.Phone != "" {
-		query += fmt.Sprintf(" WHERE phone = '%s'", filter.Phone)
+		conditions = append(conditions, fmt.Sprintf("phone = '%s'", filter.Phone))
 	}
 
 	if filter.Id != "" {
-		query += fmt.Sprintf(" WHERE id = '%s'", filter.Id)
+		conditions = append(conditions, fmt.Sprintf("id = '%s'", filter.Id))
+	}
+
+	// Add conditions to the query
+	if len(conditions) > 0 {
+		query += " WHERE " + strings.Join(conditions, " AND ")
 	}
 
 	rows, err := database.DB.Query(query)
@@ -34,12 +40,25 @@ func GetUsers(filter UserFilter) ([]User, error) {
 
 	users := []User{}
 	for rows.Next() {
-		var id, phone, email, password string
-		if err := rows.Scan(&id, &phone, &email, &password); err != nil {
+		var id, password string
+		var phone, email, file_id, file_uri, file_thumbnail_uri, bank_account_name, bank_account_holder, bank_account_number sql.NullString
+
+		if err := rows.Scan(&id, &phone, &email, &password, &file_id, &file_uri, &file_thumbnail_uri, &bank_account_name, &bank_account_holder, &bank_account_number); err != nil {
 			return nil, err
 		}
 
-		users = append(users, User{Id: id, Phone: sql.NullString{String: phone}, Email: sql.NullString{String: email}, Password: password})
+		users = append(users, User{
+			Id:                id,
+			Phone:             sql.NullString{String: phone.String, Valid: true},
+			Email:             sql.NullString{String: email.String, Valid: true},
+			Password:          password,
+			FileId:            sql.NullString{String: file_id.String, Valid: true},
+			FileUri:           sql.NullString{String: file_uri.String, Valid: true},
+			FileThumbnailUri:  sql.NullString{String: file_thumbnail_uri.String, Valid: true},
+			BankAccountName:   sql.NullString{String: bank_account_name.String, Valid: true},
+			BankAccountHolder: sql.NullString{String: bank_account_holder.String, Valid: true},
+			BankAccountNumber: sql.NullString{String: bank_account_number.String, Valid: true},
+		})
 	}
 
 	return users, nil

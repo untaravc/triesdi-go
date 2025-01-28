@@ -28,15 +28,56 @@ func Auth(c *gin.Context) {
 		return
 	}
 
+	Email := ""
+	Phone := ""
+	FileId := ""
+	BankAccountName := ""
+	BankAccountHolder := ""
+	BankAccountNumber := ""
+	FileUri := ""
+	FileThumbnailUri := ""
+
+	if users[0].Email.Valid {
+		Email = users[0].Email.String
+	}
+
+	if users[0].Phone.Valid {
+		Phone = users[0].Phone.String
+	}
+
+	if users[0].FileId.Valid {
+		FileId = users[0].FileId.String
+	}
+
+	if users[0].BankAccountName.Valid {
+		BankAccountName = users[0].BankAccountName.String
+	}
+
+	if users[0].BankAccountHolder.Valid {
+		BankAccountHolder = users[0].BankAccountHolder.String
+	}
+
+	if users[0].BankAccountNumber.Valid {
+		BankAccountNumber = users[0].BankAccountNumber.String
+	}
+
+	if users[0].FileUri.Valid {
+		FileUri = users[0].FileUri.String
+	}
+
+	if users[0].FileThumbnailUri.Valid {
+		FileThumbnailUri = users[0].FileThumbnailUri.String
+	}
+
 	user_response := user_response.UserResponse{
-		Email:             users[0].Email.String,
-		Phone:             users[0].Phone.String,
-		FileId:            users[0].FileId.String,
-		BankAccountName:   users[0].BankAccountName.String,
-		BankAccountHolder: users[0].BankAccountHolder.String,
-		BankAccountNumber: users[0].BankAccountNumber.String,
-		FileUri:           users[0].FileUri.String,
-		FileThumbnailUri:  users[0].FileThumbnailUri.String,
+		Email:             Email,
+		Phone:             Phone,
+		FileId:            FileId,
+		BankAccountName:   BankAccountName,
+		BankAccountHolder: BankAccountHolder,
+		BankAccountNumber: BankAccountNumber,
+		FileUri:           FileUri,
+		FileThumbnailUri:  FileThumbnailUri,
 	}
 	c.JSON(http.StatusOK, user_response)
 }

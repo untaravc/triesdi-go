@@ -10,10 +10,23 @@ import (
 const DB_NAME = "products"
 
 func Create(product Product) (Product, error) {
-	query := fmt.Sprintf("INSERT INTO %s (user_id, name, category, qty, price, sku, file_id, file_uri, file_thumbnail_uri) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING product_id, name, category, qty, price, sku, file_id, file_uri, file_thumbnail_uri", DB_NAME)
+	query := fmt.Sprintf("INSERT INTO %s (user_id, name, category, qty, price, sku, file_id, file_uri, file_thumbnail_uri) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) ", DB_NAME)
+	query += "RETURNING product_id, name, category, qty, price, sku, file_id, file_uri, file_thumbnail_uri, created_at, updated_at"
 
 	err := database.DB.QueryRow(query, product.UserId, product.Name, product.Category, product.Qty, product.Price, product.Sku, product.FileId, product.FileUri, product.FileThumbnailUri).
-		Scan(&product.ProductId, &product.Name, &product.Category, &product.Qty, &product.Price, &product.Sku, &product.FileId, &product.FileUri, &product.FileThumbnailUri)
+		Scan(
+			&product.ProductId,
+			&product.Name,
+			&product.Category,
+			&product.Qty,
+			&product.Price,
+			&product.Sku,
+			&product.FileId,
+			&product.FileUri,
+			&product.FileThumbnailUri,
+			&product.CreatedAt,
+			&product.UpdatedAt,
+		)
 
 	if err != nil {
 		return product, err
@@ -22,7 +35,7 @@ func Create(product Product) (Product, error) {
 }
 
 func GetAll(filter product_request.ProductFilter) ([]Product, error) {
-	selector := "product_id, name, category, qty, price, sku, file_id, file_uri, file_thumbnail_uri, created_at, updated_at"
+	selector := "product_id, user_id, name, category, qty, price, sku, file_id, file_uri, file_thumbnail_uri, created_at, updated_at"
 	query := fmt.Sprintf("SELECT %s FROM %s", selector, DB_NAME)
 
 	conditions := make([]string, 0)
@@ -67,13 +80,14 @@ func GetAll(filter product_request.ProductFilter) ([]Product, error) {
 	products := make([]Product, 0)
 	for rows.Next() {
 		var qty, price int
-		var product_id, name, category, sku, file_id, file_uri, file_thumbnail_uri, created_at, updated_at string
-		if err := rows.Scan(&product_id, &name, &category, &qty, &price, &sku, &file_id, &file_uri, &file_thumbnail_uri, &created_at, &updated_at); err != nil {
+		var product_id, user_id, name, category, sku, file_id, file_uri, file_thumbnail_uri, created_at, updated_at string
+		if err := rows.Scan(&product_id, &user_id, &name, &category, &qty, &price, &sku, &file_id, &file_uri, &file_thumbnail_uri, &created_at, &updated_at); err != nil {
 			return nil, err
 		}
 
 		products = append(products, Product{
 			ProductId:        product_id,
+			UserId:           user_id,
 			Name:             name,
 			Category:         category,
 			Qty:              qty,

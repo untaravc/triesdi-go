@@ -119,7 +119,7 @@ func RegisterEmail(c *gin.Context) {
 	}
 
 	user := user_repository.User{
-		Email:    sql.NullString{String: register_email_request.Email},
+		Email:    sql.NullString{String: register_email_request.Email, Valid: true},
 		Password: register_email_request.Password,
 	}
 
@@ -161,7 +161,7 @@ func RegisterPhone(c *gin.Context) {
 	}
 
 	user := user_repository.User{
-		Phone:    sql.NullString{String: register_phone_request.Phone},
+		Phone:    sql.NullString{String: register_phone_request.Phone, Valid: true},
 		Password: register_phone_request.Password,
 	}
 
