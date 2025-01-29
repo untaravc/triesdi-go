@@ -140,15 +140,15 @@ func Create(c *gin.Context) {
 		for _, purchase_detail := range purchase_details {
 			if user.Id == purchase_detail.UserId {
 				total_price_user += purchase_detail.Price * purchase_detail.Qty
+
+				payment_details = append(payment_details, purchase_response.PaymentDetail{
+					BankAccountName:   user.BankAccountName.String,
+					BankAccountHolder: user.BankAccountHolder.String,
+					BankAccountNumber: user.BankAccountNumber.String,
+					TotalPrice:        total_price_user,
+				})
 			}
 		}
-
-		payment_details = append(payment_details, purchase_response.PaymentDetail{
-			BankAccountName:   user.BankAccountName.String,
-			BankAccountHolder: user.BankAccountHolder.String,
-			BankAccountNumber: user.BankAccountNumber.String,
-			TotalPrice:        total_price_user,
-		})
 	}
 
 	response := purchase_response.PurchaseResponse{
@@ -158,7 +158,7 @@ func Create(c *gin.Context) {
 		PaymentDetails: payment_details,
 	}
 
-	c.JSON(http.StatusOK, response)
+	c.JSON(http.StatusCreated, response)
 }
 
 func Update(c *gin.Context) {

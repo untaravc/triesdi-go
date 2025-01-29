@@ -51,7 +51,7 @@ func Store(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, rproduct)
+	c.JSON(http.StatusCreated, rproduct)
 }
 
 func GetAll(c *gin.Context) {

@@ -1,4 +1,4 @@
-DROP TABLE IF EXISTS purchases;
+DROP TABLE IF EXISTS purchases CASCADE;
 CREATE TABLE purchases (
     purchase_id SERIAL PRIMARY KEY,
     sender_name VARCHAR(255) NOT NULL,

@@ -26,6 +26,9 @@ func GetUsers(filter UserFilter) ([]User, error) {
 	if filter.Id != "" {
 		conditions = append(conditions, fmt.Sprintf("id = '%s'", filter.Id))
 	}
+	if len(filter.Ids) > 0 {
+		conditions = append(conditions, fmt.Sprintf("id IN (%s)", strings.Join(filter.Ids, ",")))
+	}
 
 	// Add conditions to the query
 	if len(conditions) > 0 {

@@ -77,7 +77,6 @@ func UpdateStock(purchase_id int) error {
 	query += `) `
 	query += fmt.Sprintf("UPDATE %s p SET qty = p.qty - pd.qty FROM purchase_data pd WHERE p.product_id = pd.product_id", DB_PRODUCT)
 
-	// common.ConsoleLog(query)
 	_, err := database.DB.Exec(query)
 	if err != nil {
 		return err

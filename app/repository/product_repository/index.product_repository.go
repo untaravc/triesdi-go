@@ -81,8 +81,6 @@ func GetAll(filter product_request.ProductFilter) ([]Product, error) {
 		}
 	}
 
-	fmt.Println(query)
-
 	if filter.Limit != 0 {
 		query += fmt.Sprintf(" LIMIT %d", filter.Limit)
 	}

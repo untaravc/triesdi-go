@@ -8,11 +8,18 @@ import (
 	"triesdi/app/controllers/user_controller"
 	"triesdi/app/middleware"
 
+	"github.com/gin-contrib/gzip"
 	"github.com/gin-gonic/gin"
 )
 
 func InitRoute(app *gin.Engine) {
 	route := app
+
+	route.Use(gzip.Gzip(gzip.DefaultCompression))
+
+	route.GET("/", func(c *gin.Context) {
+		c.JSON(200, gin.H{"message": "project-3"})
+	})
 
 	// Auth
 	route.POST("/v1/login/email", auth_controller.LoginEmail)

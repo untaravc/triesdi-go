@@ -8,10 +8,7 @@ import (
 	"triesdi/app/configs"
 	"triesdi/app/configs/app_config"
 
-	// "triesdi/app/configs/aws_config"
 	"triesdi/app/configs/cors_config"
-	// "triesdi/app/controllers/upload_controller"
-	// "triesdi/app/services/upload_service"
 	"triesdi/app/utils/database"
 
 	"triesdi/app/configs/log_config"
@@ -19,9 +16,6 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
-	// "github.com/aws/aws-sdk-go-v2/config"
-	// "github.com/aws/aws-sdk-go-v2/credentials"
-	// "github.com/aws/aws-sdk-go-v2/service/s3"
 )
 
 func BootstrapApp() {

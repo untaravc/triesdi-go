@@ -1,4 +1,4 @@
-DROP TABLE IF EXISTS files;
+DROP TABLE IF EXISTS files CASCADE;
 CREATE TABLE files (
     file_id SERIAL PRIMARY KEY,
     file_uri VARCHAR(255),

@@ -1,0 +1,16 @@
+version: "3"
+services:
+  go-gin:
+    build: .
+    ports:
+      - "8080:8080"
+    env_file:
+      - .env
+    deploy:
+      resources:
+        limits:
+          cpus: "1"
+          memory: "2G"
+        reservations:
+          cpus: "0.5"
+          memory: "512M"
