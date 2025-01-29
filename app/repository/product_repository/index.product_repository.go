@@ -2,7 +2,10 @@ package product_repository
 
 import (
 	"fmt"
+	"regexp"
+	"strconv"
 	"strings"
+	"time"
 	"triesdi/app/requests/product_request"
 	"triesdi/app/utils/database"
 )
@@ -60,8 +63,25 @@ func GetAll(filter product_request.ProductFilter) ([]Product, error) {
 	}
 
 	if filter.SortBy != "" {
-		query += fmt.Sprintf(" ORDER BY %s", filter.SortBy)
+		switch filter.SortBy {
+		case "cheapest":
+			query += fmt.Sprintf(" ORDER BY %s", "price ASC")
+		case "newest":
+			query += fmt.Sprintf(" ORDER BY %s", "created_at DESC")
+		default:
+			pattern := `^sold-(\d+)$`
+			re := regexp.MustCompile(pattern)
+			matches := re.FindStringSubmatch(filter.SortBy)
+			if len(matches) > 1 {
+				second, e := strconv.Atoi(matches[1])
+				if e == nil {
+					query += fmt.Sprintf(" WHERE updated_at > '%s' ORDER BY %s", time.Now().Add(-time.Second*time.Duration(second)).Format("2006-01-02 15:04:05"), "updated_at DESC")
+				}
+			}
+		}
 	}
+
+	fmt.Println(query)
 
 	if filter.Limit != 0 {
 		query += fmt.Sprintf(" LIMIT %d", filter.Limit)

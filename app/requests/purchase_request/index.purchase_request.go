@@ -25,3 +25,7 @@ type PurchasedItem struct {
 	ProductId string `json:"productId" validate:"required"` // string | should a valid productId
 	Qty       int    `json:"qty" validate:"required,min=2"` // number | min: 2
 }
+
+type PurchaseUpdateRequest struct {
+	FileIds []string `json:"fileIds" validate:"required"`
+}

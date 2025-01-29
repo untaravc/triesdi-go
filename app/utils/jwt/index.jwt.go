@@ -4,7 +4,6 @@ import (
 	"errors"
 	"os"
 	"time"
-	"triesdi/app/utils/common"
 
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
@@ -21,7 +20,7 @@ type ClaimData struct {
 
 func GenerateToken(id string, email string, phone string) (string, error) {
 	expirationTime := time.Now().Add(24 * time.Hour)
-	common.ConsoleLog(email, phone)
+
 	claims := &ClaimData{
 		Id:    id,
 		Email: email,

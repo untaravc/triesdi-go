@@ -22,7 +22,8 @@ type User struct {
 }
 
 type UserFilter struct {
-	Id    string `json:"id"`
-	Email string `json:"email"`
-	Phone string `json:"phone"`
+	Id    string   `json:"id"`
+	Ids   []string `json:"ids"`
+	Email string   `json:"email"`
+	Phone string   `json:"phone"`
 }

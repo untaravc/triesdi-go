@@ -5,3 +5,8 @@ type File struct {
 	FileUri          string `json:"fileUri"`
 	FileThumbnailUri string `json:"fileThumbnailUri"`
 }
+
+type FileFilter struct {
+	FileId  string   `json:"fileId"`
+	FileIds []string `json:"fileIds"`
+}

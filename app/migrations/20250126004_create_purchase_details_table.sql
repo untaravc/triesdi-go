@@ -6,7 +6,7 @@ CREATE TABLE purchase_details (
     product_id INT NOT NULL,
     name VARCHAR(255) NOT NULL,
     category VARCHAR(255) NOT NULL,
-    quantity INT NOT NULL,
+    qty INT NOT NULL,
     price INT NOT NULL,
     sku VARCHAR(255) NOT NULL,
     file_id VARCHAR(255),

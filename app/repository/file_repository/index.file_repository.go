@@ -2,6 +2,7 @@ package file_repository
 
 import (
 	"fmt"
+	"strings"
 	"triesdi/app/configs/aws_config"
 	"triesdi/app/utils/common"
 	"triesdi/app/utils/database"
@@ -46,4 +47,39 @@ func GetById(id string) (File, error) {
 	}
 
 	return file, nil
+}
+
+func GetAll(filter FileFilter) ([]File, error) {
+	query := fmt.Sprintf("SELECT file_id, file_uri, file_thumbnail_uri FROM %s", DB_NAME)
+
+	condition := []string{}
+
+	if filter.FileId != "" {
+		condition = append(condition, fmt.Sprintf("file_id = '%s'", filter.FileId))
+	}
+
+	if len(filter.FileIds) > 0 {
+		condition = append(condition, fmt.Sprintf("file_id IN ('%s')", strings.Join(filter.FileIds, "','")))
+	}
+
+	if len(condition) > 0 {
+		query += " WHERE " + strings.Join(condition, " AND ")
+	}
+
+	rows, err := database.DB.Query(query)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var files []File
+	for rows.Next() {
+		var file File
+		if err := rows.Scan(&file.FileId, &file.FileUri, &file.FileThumbnailUri); err != nil {
+			return nil, err
+		}
+		files = append(files, file)
+	}
+
+	return files, nil
 }

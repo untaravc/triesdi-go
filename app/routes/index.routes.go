@@ -22,6 +22,7 @@ func InitRoute(app *gin.Engine) {
 
 	route.GET("/v1/product", product_controller.GetAll)
 	route.POST("/v1/purchase", purchase_controller.Create)
+	route.POST("/v1/purchase/:purchaseId", purchase_controller.Update)
 
 	// Assign Middleware
 	JWTMiddleware := middleware.JWTMiddleware()
